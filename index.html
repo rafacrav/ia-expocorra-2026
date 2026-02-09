@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>IA + Matemática & Física — Colégio CoRRA</title>
+
+  <style>
+    /* =========================
+       Theme tokens (Light/Dark)
+       ========================= */
+    :root{
+      --bg0:#0b1023;
+      --bg1:#0f172a;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.08);
+      --border: rgba(255,255,255,.12);
+      --text:#e8edf7;
+      --muted: rgba(232,237,247,.70);
+
+      --accent:#8b5cf6; /* roxo */
+      --accent2:#22c55e; /* verde */
+      --accent3:#38bdf8; /* azul */
+      --danger:#fb7185;
+
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
+
+      --radius: 18px;
+      --radius2: 14px;
+
+      --maxw: 1120px;
+
+      --gridGap: 14px;
+      --pad: 18px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+
+    html[data-theme="light"]{
+      --bg0:#f6f7fb;
+      --bg1:#ffffff;
+      --panel: rgba(15,23,42,.04);
+      --panel2: rgba(15,23,42,.06);
+      --border: rgba(15,23,42,.10);
+      --text:#0b1220;
+      --muted: rgba(11,18,32,.64);
+      --shadow: 0 14px 34px rgba(16,24,40,.10);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ scroll-behavior:auto !important; transition:none !important; animation:none !important; }
+    }
+
+    /* =========================
+       Base
+       ========================= */
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 15% 10%, rgba(139,92,246,.28), transparent 65%),
+        radial-gradient(780px 520px at 85% 20%, rgba(34,197,94,.20), transparent 60%),
+        radial-gradient(900px 520px at 60% 100%, rgba(56,189,248,.18), transparent 65%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height:100vh;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    .container{ max-width: var(--maxw); margin:0 auto; padding: 18px 16px 70px; }
+
+    /* =========================
+       Topbar
+       ========================= */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--bg1) 70%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar__inner{
+      max-width: var(--maxw);
+      margin:0 auto;
+      padding: 12px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 200px;
+    }
+    .brand__logo{
+      width:40px; height:40px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(139,92,246,.95), rgba(34,197,94,.75));
+      box-shadow: var(--shadow);
+      display:grid;
+      place-items:center;
+      border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    }
+    .brand__logo svg{ width:22px; height:22px; opacity:.95; }
+    .brand__text{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+    }
+    .brand__title{ font-weight:800; letter-spacing:-.02em; }
+    .brand__sub{ font-size:12px; color: var(--muted); margin-top:2px; }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 13px;
+      transition: transform .15s ease, background .15s ease, color .15s ease;
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip:hover{ transform: translateY(-1px); background: var(--panel2); color: var(--text); }
+    .chip svg{ width:16px; height:16px; opacity:.9; }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--panel2) 80%, transparent), var(--panel));
+      color: var(--text);
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .15s ease, box-shadow .15s ease;
+      font-weight:650;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 16px 30px rgba(0,0,0,.18); }
+    .btn svg{ width:18px; height:18px; }
+
+    /* =========================
+       Hero
+       ========================= */
+    .hero{
+      padding: 26px 0 10px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items:stretch;
+    }
+    .hero__card{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel2), var(--panel));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero__content{
+      padding: 22px;
+      position:relative;
+      z-index:2;
+    }
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-size: 13px;
+      color: var(--muted);
+      border: 1px dashed color-mix(in srgb, var(--border) 85%, transparent);
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--panel) 80%, transparent);
+    }
+    .kicker i{
+      width:8px; height:8px; border-radius:999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 4px rgba(139,92,246,.15);
+    }
+    .hero h1{
+      margin: 14px 0 10px;
+      font-size: clamp(28px, 3.2vw, 44px);
+      line-height: 1.02;
+      letter-spacing:-.03em;
+    }
+    .hero p{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      max-width: 62ch;
+    }
+    .hero__meta{
+      margin-top: 16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 75%, transparent);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .pill b{ color: var(--text); font-weight:700; }
+    .pill svg{ width:16px; height:16px; opacity:.9; }
+
+    .hero__actions{
+      margin-top: 18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .cta{
+      border:0;
+      background: linear-gradient(135deg, rgba(139,92,246,.95), rgba(34,197,94,.85));
+      color:#fff;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight:800;
+      letter-spacing:-.01em;
+      box-shadow: 0 18px 40px rgba(139,92,246,.22);
+      cursor:pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .cta:hover{ transform: translateY(-1px); box-shadow: 0 22px 48px rgba(139,92,246,.28); }
+    .cta svg{ width:18px; height:18px; }
+
+    .ghost{
+      border:1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .ghost:hover{ transform: translateY(-1px); background: var(--panel2); }
+
+    .hero__art{
+      min-height: 250px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      padding: 18px;
+    }
+    .photo-slot{
+      flex:1;
+      min-height: 190px;
+      border-radius: var(--radius);
+      border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--panel2) 75%, transparent), color-mix(in srgb, var(--panel) 85%, transparent)),
+        radial-gradient(500px 220px at 20% 20%, rgba(56,189,248,.22), transparent 55%),
+        radial-gradient(520px 240px at 80% 60%, rgba(34,197,94,.20), transparent 60%);
+      display:grid;
+      place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .photo-slot__label{
+      text-align:center;
+      color: var(--muted);
+      padding: 14px;
+      max-width: 36ch;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .photo-slot__label b{ color: var(--text); }
+    .math-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .mini{
+      border:1px solid var(--border);
+      background: var(--panel);
+      border-radius: var(--radius2);
+      padding: 12px;
+    }
+    .mini__t{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .mini__t b{ font-size:13px; letter-spacing:-.01em; }
+    .mini__t code{ font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .mini__p{ font-size: 12.5px; color: var(--muted); line-height: 1.45; margin:0; }
+
+    /* =========================
+       Sections
+       ========================= */
+    .section{
+      margin-top: 18px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel2), var(--panel));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .section__head{
+      padding: 18px 18px 12px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 14px;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+    }
+    .section__title{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:-.02em;
+      font-weight: 850;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .section__title svg{ width:18px; height:18px; opacity:.9; }
+    .section__desc{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.55;
+      max-width: 78ch;
+    }
+    .section__body{ padding: 16px 18px 18px; }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gridGap);
+    }
+    .card{
+      border:1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 88%, transparent);
+      border-radius: var(--radius2);
+      padding: 14px;
+    }
+    .card h3{
+      margin:0 0 6px;
+      font-size: 15px;
+      letter-spacing:-.02em;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .card h3 .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 4px rgba(139,92,246,.14);
+    }
+    .card p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .proscons{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gridGap);
+      margin-top: 12px;
+    }
+    .list{
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .li{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+      background: color-mix(in srgb, var(--panel) 86%, transparent);
+    }
+    .li .ic{
+      width:26px; height:26px; border-radius: 10px;
+      display:grid; place-items:center;
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      background: color-mix(in srgb, var(--panel2) 90%, transparent);
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+    .li .ic svg{ width:16px; height:16px; }
+    .li b{ display:block; font-size: 13.5px; letter-spacing:-.01em; }
+    .li span{ display:block; color: var(--muted); font-size: 13px; line-height: 1.4; margin-top:3px; }
+
+    /* =========================
+       Groups / Carousels
+       ========================= */
+    .groups{
+      margin-top: 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .group{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel2), var(--panel));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .group__head{
+      padding: 16px 18px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+    }
+    .group__name{
+      margin:0;
+      font-weight: 900;
+      letter-spacing:-.02em;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .group__name small{
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .carousel__controls{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .iconbtn{
+      width:40px; height:40px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease;
+      user-select:none;
+    }
+    .iconbtn:hover{ transform: translateY(-1px); background: var(--panel2); }
+    .iconbtn svg{ width:18px; height:18px; }
+
+    .carousel{
+      position:relative;
+      padding: 14px 12px 18px;
+    }
+    .track{
+      display:flex;
+      gap: 12px;
+      overflow-x:auto;
+      scroll-snap-type: x mandatory;
+      padding: 0 6px 10px;
+      scrollbar-width: thin;
+      scrollbar-color: color-mix(in srgb, var(--border) 70%, transparent) transparent;
+    }
+    .track::-webkit-scrollbar{ height: 10px; }
+    .track::-webkit-scrollbar-thumb{
+      background: color-mix(in srgb, var(--border) 75%, transparent);
+      border-radius: 999px;
+    }
+
+    .person{
+      scroll-snap-align: start;
+      min-width: 220px;
+      max-width: 260px;
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 88%, transparent);
+      border-radius: 16px;
+      padding: 14px;
+      position:relative;
+      overflow:hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .person:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 18px 36px rgba(0,0,0,.18);
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+    }
+    .person__top{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+    }
+    .avatar{
+      width: 46px; height: 46px;
+      border-radius: 16px;
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      background:
+        radial-gradient(140px 70px at 30% 20%, rgba(139,92,246,.22), transparent 55%),
+        radial-gradient(160px 80px at 80% 60%, rgba(34,197,94,.18), transparent 60%),
+        color-mix(in srgb, var(--panel2) 92%, transparent);
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+    }
+    .avatar svg{ width:28px; height:28px; opacity:.92; }
+
+    .person__name{
+      font-weight: 900;
+      letter-spacing:-.02em;
+      line-height: 1.1;
+      margin:0;
+    }
+    .person__sub{
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+
+    .tag{
+      position:absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 11.5px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 85%, transparent);
+      color: var(--muted);
+      display:flex;
+      align-items:center;
+      gap: 6px;
+    }
+    .tag i{
+      width:8px; height:8px; border-radius:999px;
+      background: linear-gradient(135deg, var(--accent3), var(--accent2));
+      box-shadow: 0 0 0 4px rgba(56,189,248,.12);
+    }
+
+    /* =========================
+       Footer
+       ========================= */
+    .footer{
+      margin-top: 18px;
+      color: var(--muted);
+      text-align:center;
+      font-size: 12.5px;
+      padding: 18px 8px;
+    }
+
+    /* =========================
+       Responsive
+       ========================= */
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+      .hero__art{ padding: 14px; }
+      .grid2{ grid-template-columns: 1fr; }
+      .proscons{ grid-template-columns: 1fr; }
+      .brand{ min-width: 0; }
+    }
+    @media (max-width: 480px){
+      .topbar__inner{ gap:10px; }
+      .chip{ display:none; } /* limpa no mobile */
+      .person{ min-width: 78%; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand">
+        <div class="brand__logo" aria-hidden="true">
+          <!-- logo: "IA" estilizado -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7.2 18.4V5.6" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M7.2 12h5.2" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M17.4 18.4l-3.6-12.8" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M20.4 18.4l-3.6-12.8" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>
+          </svg>
+        </div>
+        <div class="brand__text">
+          <div class="brand__title">IA + Matemática & Física</div>
+          <div class="brand__sub">Colégio CoRRA • 1º EM (manhã) • 3º andar</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="chip" href="#conteudo">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6 7h12M6 12h12M6 17h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Conteúdo
+        </a>
+        <a class="chip" href="#grupos">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M16 11a4 4 0 1 0-8 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M5 20c1.2-3.6 12.8-3.6 14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M19 8.5c1.6.6 2.5 1.8 2.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+          </svg>
+          Grupos
+        </a>
+
+        <button id="themeToggle" class="btn" type="button" aria-label="Alternar tema">
+          <svg id="themeIcon" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6M18.4 18.4l-1.6-1.6M7.2 7.2 5.6 5.6"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Tema
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero" id="topo">
+      <div class="hero__card">
+        <div class="hero__content">
+          <div class="kicker">
+            <i></i>
+            <span><b>1º Ensino Médio (Manhã)</b> • Projeto: IA aplicada</span>
+          </div>
+
+          <h1>Inteligência Artificial com cara de <span style="color:var(--accent)">Matemática</span> e <span style="color:var(--accent2)">Física</span>.</h1>
+
+          <p>
+            Uma landing page pra apresentar o tema, explicar o básico de IA, e mostrar os grupos com as pessoas.
+            A ideia é misturar a vibe “cálculo + mundo real” numa estética bem moderna.
+          </p>
+
+          <div class="hero__meta">
+            <span class="pill">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2"/>
+                <path d="M4 10V7a3 3 0 0 1 3-3h3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+                <path d="M20 14v3a3 3 0 0 1-3 3h-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+              </svg>
+              <b>Colégio:</b> CoRRA
+            </span>
+            <span class="pill">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 21s7-4.4 7-11a7 7 0 0 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 10.5a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <b>Local:</b> 3º andar
+            </span>
+            <span class="pill">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M6 8l6-3 6 3v8l-6 3-6-3V8Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 5v14" stroke="currentColor" stroke-width="2" opacity=".65"/>
+              </svg>
+              <b>Temática:</b> IA + Exatas
+            </span>
+          </div>
+
+          <div class="hero__actions">
+            <a class="cta" href="#conteudo">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <path d="M7 14l5 5 5-5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Ver conteúdo
+            </a>
+
+            <a class="ghost" href="#grupos">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M16 11a4 4 0 1 0-8 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 20c1.2-3.6 12.8-3.6 14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Ver grupos
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero__card hero__art">
+        <div class="photo-slot" id="photoSlot">
+          <div class="photo-slot__label">
+            <b>Foto do colégio / sala</b><br/>
+            Depois a gente troca esse bloco por uma imagem (CoRRA — 3º andar).
+          </div>
+        </div>
+
+        <div class="math-grid">
+          <div class="mini">
+            <div class="mini__t">
+              <b>Matemática</b>
+              <code>dados → padrões</code>
+            </div>
+            <p class="mini__p">Probabilidade, funções, estatística… IA aprende encontrando padrões.</p>
+          </div>
+
+          <div class="mini">
+            <div class="mini__t">
+              <b>Física</b>
+              <code>modelos → mundo</code>
+            </div>
+            <p class="mini__p">Simulações e previsões: IA ajuda a “chutar menos” e medir melhor.</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Content -->
+    <section class="section" id="conteudo">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M8 20V8l10-4v12l-10 4Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 8l10-4" stroke="currentColor" stroke-width="2" opacity=".6"/>
+            </svg>
+            IA na Matemática e na Física
+          </h2>
+          <p class="section__desc">
+            A IA vira poderosa quando junta <b>cálculo</b> (pra entender dados) com <b>modelos</b> (pra representar o mundo real).
+          </p>
+        </div>
+      </div>
+
+      <div class="section__body">
+        <div class="grid2">
+          <div class="card">
+            <h3><span class="dot"></span> Matemática: o cérebro dos dados</h3>
+            <p>
+              IA usa matemática pra transformar dados em decisões: estatística, álgebra, funções, probabilidade,
+              otimização… é tipo “achar padrão no caos”.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3><span class="dot"></span> Física: a ponte pro mundo real</h3>
+            <p>
+              Em física, a IA ajuda em simulações, análise de sinais e previsões.
+              Ex.: detectar falhas, prever movimento, analisar imagens, medir coisas.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3c-4.4 0-8 3.6-8 8 0 3.4 2.1 6.3 5.1 7.5V21h5.8v-2.5C17.9 17.3 20 14.4 20 11c0-4.4-3.6-8-8-8Z"
+                    stroke="currentColor" stroke-width="2"/>
+              <path d="M9 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Definição de IA
+          </h2>
+          <p class="section__desc">
+            Definição curta e “de aluno”: sem enrolação, mas com sentido.
+          </p>
+        </div>
+      </div>
+
+      <div class="section__body">
+        <div class="card">
+          <h3><span class="dot"></span> O que é Inteligência Artificial?</h3>
+          <p>
+            IA é quando um sistema aprende com exemplos (dados) pra reconhecer padrões e tomar decisões.
+            Em vez de só seguir regras fixas, ela se ajusta conforme vê mais informação.
+          </p>
+        </div>
+
+        <div class="proscons">
+          <div class="card">
+            <h3><span class="dot"></span> Vantagens</h3>
+            <ul class="list" id="prosList"></ul>
+          </div>
+
+          <div class="card">
+            <h3><span class="dot"></span> Desvantagens</h3>
+            <ul class="list" id="consList"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Groups -->
+    <section class="section" id="grupos">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M16 11a4 4 0 1 0-8 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M5 20c1.2-3.6 12.8-3.6 14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M19 8.5c1.6.6 2.5 1.8 2.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+            </svg>
+            Grupos
+          </h2>
+          <p class="section__desc">
+            Cada grupo tem um carrossel com os membros. Dá pra trocar nomes, criar grupos novos, etc.
+          </p>
+        </div>
+      </div>
+
+      <div class="section__body">
+        <div class="groups" id="groupsRoot"></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Feito pra apresentação do <b>1º EM (manhã)</b> • Colégio CoRRA • Tema: <b>IA + Matemática & Física</b>
+    </div>
+  </main>
+
+  <script>
+    // =========================
+    // Theme (Light/Dark)
+    // =========================
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeToggle');
+
+    function setTheme(mode){
+      root.setAttribute('data-theme', mode);
+      localStorage.setItem('theme', mode);
+    }
+
+    // default: saved theme or system
+    (function initTheme(){
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light' || saved === 'dark') return setTheme(saved);
+
+      // If no saved theme, pick based on system
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      setTheme(prefersLight ? 'light' : 'dark');
+    })();
+
+    themeBtn.addEventListener('click', () => {
+      const current = root.getAttribute('data-theme') || 'dark';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    // =========================
+    // Pros / Cons content
+    // =========================
+    const pros = [
+      { title: "Automatiza tarefas chatas", desc: "Organiza, classifica e resume informações bem mais rápido." },
+      { title: "Ajuda a aprender", desc: "Pode explicar de jeitos diferentes e dar exemplos personalizados." },
+      { title: "Detecta padrões", desc: "Em dados grandes, a IA acha coisas que passam batido." },
+      { title: "Apoia decisões", desc: "Melhora previsões (quando bem usada e com dados bons)." },
+    ];
+
+    const cons = [
+      { title: "Pode errar com confiança", desc: "Às vezes inventa coisas ou se baseia em dados ruins." },
+      { title: "Viés (injustiça)", desc: "Se os dados têm preconceito, a IA aprende isso também." },
+      { title: "Dependência / preguiça", desc: "Se usar sem pensar, a pessoa deixa de aprender de verdade." },
+      { title: "Privacidade", desc: "Dados pessoais precisam de cuidado (o que entra / o que sai)." },
+    ];
+
+    function renderBullet(item, kind){
+      const isPro = kind === 'pro';
+      const icon = isPro
+        ? `<svg viewBox="0 0 24 24" fill="none"><path d="M20 7L10 17l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+        : `<svg viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+
+      return `
+        <li class="li">
+          <span class="ic" style="${isPro ? 'color: var(--accent2);' : 'color: var(--danger);'}">
+            ${icon}
+          </span>
+          <div>
+            <b>${item.title}</b>
+            <span>${item.desc}</span>
+          </div>
+        </li>
+      `;
+    }
+
+    document.getElementById('prosList').innerHTML = pros.map(p => renderBullet(p, 'pro')).join('');
+    document.getElementById('consList').innerHTML = cons.map(c => renderBullet(c, 'con')).join('');
+
+    // =========================
+    // Groups data (edit here)
+    // =========================
+    const groups = [
+      { name: "Grupo 1", room: "3º andar", people: ["Rafael", "Nicolas", "Maria", "João", "Ana"] },
+      { name: "Grupo 2", room: "3º andar", people: ["Pedro", "Luiza", "Gabriel", "Bia"] },
+      { name: "Grupo 3", room: "3º andar", people: ["Arthur", "Lara", "Enzo", "Sofia", "Bruno", "Carla"] },
+    ];
+
+    // =========================
+    // SVG avatar (default)
+    // =========================
+    function avatarSVG(){
+      return `
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 12.2a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M4.8 20.2c1.5-4.4 12.9-4.4 14.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M7 8.4c1.4-1.5 3.2-2.2 5-2.2s3.6.7 5 2.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+        </svg>
+      `;
+    }
+
+    function personCardHTML(name, index){
+      const tag = (index % 3 === 0) ? "IA" : (index % 3 === 1) ? "Math" : "Física";
+      return `
+        <div class="person">
+          <div class="tag"><i></i>${tag}</div>
+          <div class="person__top">
+            <div class="avatar" style="color: color-mix(in srgb, var(--accent) 65%, var(--text));">
+              ${avatarSVG()}
+            </div>
+            <div>
+              <p class="person__name">${name}</p>
+              <div class="person__sub">Membro do grupo • 1º EM</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function groupHTML(group, idx){
+      const id = `g${idx}`;
+      return `
+        <article class="group" data-group="${id}">
+          <div class="group__head">
+            <h3 class="group__name">
+              ${group.name}
+              <small>• ${group.people.length} pessoa(s) • ${group.room}</small>
+            </h3>
+
+            <div class="carousel__controls">
+              <div class="iconbtn" data-action="prev" aria-label="Anterior">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="iconbtn" data-action="next" aria-label="Próximo">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel">
+            <div class="track" id="${id}">
+              ${group.people.map((p, i) => personCardHTML(p, i)).join('')}
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    const rootEl = document.getElementById('groupsRoot');
+    rootEl.innerHTML = groups.map(groupHTML).join('');
+
+    // =========================
+    // Carousel behavior
+    // =========================
+    function scrollByCards(trackEl, dir){
+      // find one card width to scroll
+      const card = trackEl.querySelector('.person');
+      const gap = 12;
+      const amount = card ? (card.getBoundingClientRect().width + gap) * 2 : 300;
+      trackEl.scrollBy({ left: dir * amount, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('.group').forEach(groupEl => {
+      const track = groupEl.querySelector('.track');
+      const prev = groupEl.querySelector('[data-action="prev"]');
+      const next = groupEl.querySelector('[data-action="next"]');
+
+      prev.addEventListener('click', () => scrollByCards(track, -1));
+      next.addEventListener('click', () => scrollByCards(track,  1));
+
+      // swipe hint: if user scrolls, no need
+    });
+
+    // =========================
+    // Smooth scroll for anchor links
+    // =========================
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+</html>
