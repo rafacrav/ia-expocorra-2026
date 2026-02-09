@@ -1,1428 +1,743 @@
-<!doctype html>
-<html lang="pt-BR" data-theme="dark">
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="dark light" />
-  <title>IA + Matemática & Física — Colégio CoRRA</title>
-
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IA + Matemática & Física • 1º EM Manhã • Colégio CoRRA</title>
 
   <style>
-    /* =========================================
-       Mobile-first, high polish UI/UX
-       ========================================= */
-
-    :root{
-      /* brand */
-      --p: #8b5cf6;   /* purple */
-      --g: #22c55e;   /* green */
-      --b: #38bdf8;   /* blue */
-      --r: #fb7185;   /* rose */
-
-      /* dark theme tokens */
-      --bg0:#070a14;
-      --bg1:#0b1023;
-      --bg2:#0f172a;
-
-      --panel0: rgba(255,255,255,.06);
-      --panel1: rgba(255,255,255,.08);
-      --panel2: rgba(255,255,255,.10);
-      --border: rgba(255,255,255,.12);
-
-      --text: #e9edff;
-      --muted: rgba(233,237,255,.72);
-
-      --shadow: 0 18px 52px rgba(0,0,0,.35);
-      --shadow2: 0 10px 26px rgba(0,0,0,.22);
-
+    :root {
+      --bg: #0a1321;
+      --bg-card: #14213d;
+      --text: #e0e7ff;
+      --text-soft: #a5b4fc;
+      --accent-purple: #c084fc;
+      --accent-green: #6ee7b7;
+      --border: rgba(165,180,252,0.15);
       --radius: 18px;
-      --radius2: 14px;
-      --radius3: 999px;
-
-      --maxw: 1160px;
-      --pad: 16px;
-
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-
-      --hair: 1px solid var(--border);
     }
 
-    html[data-theme="light"]{
-      --bg0:#f5f6ff;
-      --bg1:#ffffff;
-      --bg2:#f7f8ff;
-
-      --panel0: rgba(15,23,42,.04);
-      --panel1: rgba(15,23,42,.06);
-      --panel2: rgba(15,23,42,.08);
-      --border: rgba(15,23,42,.12);
-
-      --text: #0b1220;
-      --muted: rgba(11,18,32,.64);
-
-      --shadow: 0 16px 46px rgba(16,24,40,.12);
-      --shadow2: 0 10px 24px rgba(16,24,40,.10);
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --bg-card: #ffffff;
+      --text: #1e293b;
+      --text-soft: #64748b;
+      --border: rgba(203,213,225,0.6);
     }
 
-    @media (prefers-reduced-motion: reduce){
-      *{ animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-    }
-
-    *{ box-sizing: border-box; }
-    html, body{ height: 100%; }
-    body{
-      margin:0;
-      font-family: var(--sans);
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      background:
-        radial-gradient(1200px 600px at 15% 12%, color-mix(in srgb, var(--p) 26%, transparent), transparent 65%),
-        radial-gradient(900px 520px at 85% 18%, color-mix(in srgb, var(--g) 18%, transparent), transparent 60%),
-        radial-gradient(1000px 600px at 60% 110%, color-mix(in srgb, var(--b) 18%, transparent), transparent 65%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-      overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    a{ color: inherit; text-decoration: none; }
-    .container{ max-width: var(--maxw); margin: 0 auto; padding: 18px 14px 76px; }
-
-    /* subtle grid overlay */
-    .bg-grid{
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .22;
-      mix-blend-mode: overlay;
-      background-image:
-        linear-gradient(to right, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px),
-        linear-gradient(to bottom, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: radial-gradient(900px 520px at 50% 10%, #000 55%, transparent 85%);
-    }
-
-    /* topbar */
-    .topbar{
+    header {
       position: sticky;
       top: 0;
-      z-index: 50;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      background: color-mix(in srgb, var(--bg1) 74%, transparent);
-      border-bottom: var(--hair);
+      z-index: 100;
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
     }
-    .topbar__inner{
-      max-width: var(--maxw);
+
+    .header-inner {
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 12px 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width: 0;
-    }
-    .logo{
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-      background:
-        radial-gradient(70px 70px at 35% 30%, color-mix(in srgb, var(--p) 75%, transparent), transparent 60%),
-        radial-gradient(80px 70px at 70% 70%, color-mix(in srgb, var(--g) 55%, transparent), transparent 60%),
-        linear-gradient(180deg, var(--panel1), var(--panel0));
-      box-shadow: var(--shadow2);
-      display:grid;
-      place-items:center;
-    }
-    .logo svg{ width:22px; height:22px; opacity:.95; }
-
-    .brand__txt{ display:flex; flex-direction:column; line-height:1.05; min-width:0; }
-    .brand__title{ font-weight: 900; letter-spacing:-.02em; font-size: 14px; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; }
-    .brand__sub{ font-size: 12px; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; }
-
-    .nav{
-      display:flex;
-      align-items:center;
-      gap: 10px;
+    .school-logo {
+      max-width: 220px;
+      height: auto;
+      display: block;
+      margin-bottom: 8px;
     }
 
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      border-radius: var(--radius3);
-      border: var(--hair);
-      background: linear-gradient(180deg, var(--panel2), var(--panel0));
-      color: var(--text);
-      padding: 10px 12px;
-      font-weight: 750;
-      letter-spacing: -.01em;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-      box-shadow: 0 10px 24px rgba(0,0,0,.10);
-    }
-    .btn:hover{ transform: translateY(-1px); box-shadow: 0 16px 32px rgba(0,0,0,.16); background: linear-gradient(180deg, var(--panel2), var(--panel1)); }
-    .btn svg{ width:18px; height:18px; opacity:.92; }
-
-    .chip{
-      display:none; /* mobile-first: hide, show on desktop */
-      align-items:center;
-      gap:8px;
-      padding: 10px 12px;
-      border-radius: var(--radius3);
-      border: var(--hair);
-      background: var(--panel0);
-      color: var(--muted);
-      font-weight: 650;
-      font-size: 13px;
-      transition: transform .15s ease, color .15s ease, background .15s ease;
-    }
-    .chip:hover{ transform: translateY(-1px); color: var(--text); background: var(--panel1); }
-
-    /* dropdown */
-    .drop{
-      position: relative;
-      display:inline-flex;
-    }
-    .menu{
-      position:absolute;
-      right:0;
-      top: calc(100% + 10px);
-      width: min(320px, calc(100vw - 24px));
-      border-radius: 16px;
-      border: var(--hair);
-      background: linear-gradient(180deg, var(--panel2), var(--panel0));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      transform-origin: top right;
-      transform: scale(.98) translateY(-6px);
-      opacity: 0;
-      pointer-events:none;
-      transition: transform .18s ease, opacity .18s ease;
-    }
-    .menu[data-open="true"]{
-      transform: scale(1) translateY(0);
-      opacity: 1;
-      pointer-events:auto;
-    }
-    .menu__head{
-      padding: 14px 14px 10px;
-      border-bottom: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-    }
-    .menu__title{
-      font-weight: 900;
-      letter-spacing:-.02em;
-      margin:0;
-      font-size: 14px;
-    }
-    .menu__sub{
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 12.5px;
-      line-height:1.45;
-    }
-    .menu__items{ padding: 8px; display:flex; flex-direction:column; gap: 8px; }
-    .menu__item{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-      background: color-mix(in srgb, var(--panel0) 85%, transparent);
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-    }
-    .menu__item:hover{
-      transform: translateY(-1px);
-      background: color-mix(in srgb, var(--panel1) 85%, transparent);
-      border-color: color-mix(in srgb, var(--p) 45%, var(--border));
-    }
-    .menu__left{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-width:0;
-    }
-    .ico{
-      width: 36px;
-      height: 36px;
-      border-radius: 14px;
-      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-      background:
-        radial-gradient(80px 60px at 30% 20%, color-mix(in srgb, var(--b) 35%, transparent), transparent 55%),
-        radial-gradient(80px 60px at 80% 70%, color-mix(in srgb, var(--g) 25%, transparent), transparent 60%),
-        linear-gradient(180deg, var(--panel1), var(--panel0));
-      display:grid;
-      place-items:center;
-      flex: 0 0 auto;
-    }
-    .ico svg{ width:18px; height:18px; opacity:.92; }
-    .menu__name{
-      font-weight: 900;
-      letter-spacing:-.02em;
-      font-size: 13.5px;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .menu__hint{
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 3px;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .chev svg{ width:18px; height:18px; opacity:.75; }
-
-    /* hero */
-    .hero{
-      margin-top: 14px;
-      border-radius: calc(var(--radius) + 2px);
-      border: var(--hair);
-      background:
-        radial-gradient(900px 520px at 12% 20%, color-mix(in srgb, var(--p) 22%, transparent), transparent 65%),
-        radial-gradient(900px 520px at 88% 30%, color-mix(in srgb, var(--g) 16%, transparent), transparent 60%),
-        linear-gradient(180deg, var(--panel2), var(--panel0));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
-    .hero::before{
-      content:"";
-      position:absolute; inset:-1px;
-      background:
-        radial-gradient(800px 300px at 30% 10%, rgba(255,255,255,.07), transparent 70%),
-        radial-gradient(700px 280px at 70% 25%, rgba(255,255,255,.05), transparent 70%);
-      pointer-events:none;
-    }
-    .hero__inner{
-      padding: 18px;
-      display:grid;
-      gap: 14px;
+    .school-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-align: center;
     }
 
-    .kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 8px 10px;
-      border-radius: var(--radius3);
-      border: 1px dashed color-mix(in srgb, var(--border) 85%, transparent);
-      background: color-mix(in srgb, var(--panel0) 80%, transparent);
-      color: var(--muted);
-      font-size: 12.5px;
-      width: fit-content;
-      max-width: 100%;
-    }
-    .kdot{
-      width: 9px; height: 9px; border-radius: 999px;
-      background: linear-gradient(135deg, var(--p), var(--g));
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--p) 20%, transparent);
-      flex: 0 0 auto;
+    .school-name small {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-top: 4px;
     }
 
-    .hero h1{
-      margin: 0;
-      font-size: clamp(26px, 6.2vw, 46px);
-      line-height: 1.02;
-      letter-spacing:-.04em;
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: 0.25s;
     }
-    .grad{
-      background: linear-gradient(135deg, var(--p), var(--g));
-      -webkit-background-clip:text;
-      background-clip:text;
+
+    main { padding: 40px 20px 100px; max-width: 1200px; margin: 0 auto; }
+
+    .hero {
+      text-align: center;
+      padding: 20px 0 60px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 9vw, 5rem);
+      line-height: 1.05;
+      margin-bottom: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .highlight {
+      background: linear-gradient(90deg, var(--accent-purple), var(--accent-green));
+      -webkit-background-clip: text;
+      background-clip: text;
       color: transparent;
     }
 
-    .hero p{
-      margin:0;
-      color: var(--muted);
-      font-size: 14.5px;
-      line-height: 1.6;
-      max-width: 70ch;
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-soft);
+      max-width: 760px;
+      margin: 0 auto 40px;
     }
 
-    .hero__meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 10px;
-      margin-top: 6px;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 9px 10px;
-      border-radius: var(--radius3);
-      border: var(--hair);
-      background: color-mix(in srgb, var(--panel0) 85%, transparent);
-      color: var(--muted);
-      font-size: 12.5px;
-    }
-    .pill b{ color: var(--text); font-weight: 850; }
-    .pill svg{ width:16px; height:16px; opacity:.92; }
-
-    .hero__grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .hero__box{
-      border-radius: var(--radius);
-      border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
-      background: linear-gradient(180deg, var(--panel1), var(--panel0));
-      overflow:hidden;
-      box-shadow: 0 14px 32px rgba(0,0,0,.12);
-    }
-
-    .photo{
-      position:relative;
-      min-height: 170px;
-      display:grid;
-      place-items:center;
-      padding: 18px;
-      background:
-        radial-gradient(640px 260px at 20% 25%, color-mix(in srgb, var(--b) 20%, transparent), transparent 55%),
-        radial-gradient(680px 280px at 85% 70%, color-mix(in srgb, var(--g) 18%, transparent), transparent 60%),
-        linear-gradient(180deg, color-mix(in srgb, var(--panel2) 80%, transparent), var(--panel0));
-      border-bottom: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-    }
-    .photo__title{
-      text-align:center;
-      max-width: 52ch;
-    }
-    .photo__title b{ font-weight: 900; }
-    .photo__title p{ margin: 8px 0 0; font-size: 13px; }
-
-    .equations{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
-      justify-content:center;
-      margin-top: 12px;
-      opacity: .9;
-    }
-    .eq{
-      font-family: var(--mono);
-      font-size: 12px;
-      color: color-mix(in srgb, var(--muted) 90%, transparent);
-      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-      background: color-mix(in srgb, var(--panel0) 85%, transparent);
-      padding: 8px 10px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-
-    .quick{
-      padding: 14px;
-      display:grid;
-      gap: 10px;
-    }
-    .quick__row{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 12px;
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-      background: color-mix(in srgb, var(--panel0) 86%, transparent);
-    }
-    .quick__left{
-      min-width:0;
-    }
-    .quick__t{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      font-weight: 900;
-      letter-spacing:-.02em;
-      font-size: 13.5px;
-    }
-    .quick__t i{
-      width:10px; height:10px; border-radius:999px;
-      background: linear-gradient(135deg, var(--p), var(--g));
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--p) 18%, transparent);
-      flex: 0 0 auto;
-    }
-    .quick__p{
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 12.8px;
-      line-height: 1.45;
-    }
-    .quick__badge{
-      flex: 0 0 auto;
-      font-size: 12px;
-      border-radius: 999px;
-      padding: 8px 10px;
-      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-      background: color-mix(in srgb, var(--panel0) 85%, transparent);
-      color: var(--muted);
-      font-weight: 750;
-    }
-
-    /* sections */
-    .section{
-      margin-top: 14px;
-      border-radius: var(--radius);
-      border: var(--hair);
-      background: linear-gradient(180deg, var(--panel2), var(--panel0));
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-    .section__head{
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap: 12px;
-    }
-    .section__title{
-      margin:0;
-      font-size: 16px;
-      font-weight: 950;
-      letter-spacing:-.02em;
-      display:flex;
-      align-items:center;
-      gap: 10px;
-    }
-    .section__title svg{ width:18px; height:18px; opacity:.92; }
-    .section__desc{
-      margin: 7px 0 0;
-      color: var(--muted);
-      font-size: 13.5px;
-      line-height: 1.55;
-      max-width: 80ch;
-    }
-    .section__body{ padding: 14px 16px 16px; }
-
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-    .card{
-      border-radius: var(--radius2);
-      border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
-      background: color-mix(in srgb, var(--panel0) 88%, transparent);
-      padding: 14px;
-      position:relative;
-      overflow:hidden;
-    }
-    .card::before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(520px 220px at 10% 0%, rgba(255,255,255,.06), transparent 70%);
-      pointer-events:none;
-    }
-
-    .card h3{
-      margin:0;
-      font-size: 14px;
-      font-weight: 950;
-      letter-spacing:-.02em;
-      display:flex;
-      align-items:center;
-      gap: 10px;
-    }
-    .dot{
-      width: 10px; height: 10px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--p), var(--g));
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--p) 16%, transparent);
-      flex: 0 0 auto;
-    }
-    .card p{
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 13.5px;
-      line-height:1.6;
-      position:relative;
-      z-index:1;
-    }
-
-    .callout{
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-      background:
-        radial-gradient(520px 220px at 15% 20%, color-mix(in srgb, var(--p) 18%, transparent), transparent 65%),
-        linear-gradient(180deg, color-mix(in srgb, var(--panel1) 75%, transparent), var(--panel0));
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.55;
-    }
-    .callout b{ color: var(--text); }
-
-    /* pros/cons */
-    .pc{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    .list{
-      margin: 12px 0 0;
-      padding: 0;
-      list-style:none;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-    .li{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      padding: 10px 10px;
-      border-radius: 14px;
-      border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-      background: color-mix(in srgb, var(--panel0) 88%, transparent);
-    }
-    .ic{
-      width: 28px; height: 28px;
-      border-radius: 12px;
-      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-      background: color-mix(in srgb, var(--panel1) 85%, transparent);
-      display:grid;
-      place-items:center;
-      flex: 0 0 auto;
-      margin-top: 1px;
-    }
-    .ic svg{ width:16px; height:16px; }
-    .li b{ display:block; font-weight: 900; font-size: 13.5px; letter-spacing:-.01em; }
-    .li span{ display:block; color: var(--muted); font-size: 13px; line-height:1.45; margin-top: 3px; }
-
-    /* groups */
-    .groups{
-      display:flex;
-      flex-direction:column;
-      gap: 14px;
-    }
-    .group{
-      border-radius: var(--radius);
-      border: var(--hair);
-      background: linear-gradient(180deg, var(--panel2), var(--panel0));
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-    .group__head{
-      padding: 14px 16px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      border-bottom: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-    }
-    .group__name{
-      margin:0;
-      font-size: 14.5px;
-      font-weight: 950;
-      letter-spacing:-.02em;
-      display:flex;
-      align-items:baseline;
-      gap: 10px;
-      min-width:0;
-    }
-    .group__name small{
-      color: var(--muted);
-      font-weight: 750;
-      font-size: 12.5px;
-      white-space: nowrap;
-    }
-    .ctrls{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      flex: 0 0 auto;
-    }
-    .iconbtn{
-      width: 40px; height: 40px;
-      border-radius: 999px;
-      border: var(--hair);
-      background: var(--panel0);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .15s ease, background .15s ease;
-    }
-    .iconbtn:hover{ transform: translateY(-1px); background: var(--panel1); }
-    .iconbtn svg{ width:18px; height:18px; opacity:.92; }
-
-    .carousel{
-      padding: 12px 10px 16px;
-    }
-    .swiper {
+    .school-photo {
       width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      margin: 32px 0;
     }
-    .swiper-slide {
-      width: auto;
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      margin: 20px 0 60px;
     }
-    .person{
-      scroll-snap-align: start;
-      flex: 0 0 auto;
-      min-width: 240px;
-      max-width: 280px;
-      border-radius: 16px;
-      border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
-      background: color-mix(in srgb, var(--panel0) 90%, transparent);
-      padding: 14px;
-      position:relative;
-      overflow:hidden;
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+
+    .tag {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: var(--text-soft);
     }
-    .person:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 18px 36px rgba(0,0,0,.18);
-      border-color: color-mix(in srgb, var(--p) 45%, var(--border));
+
+    section { margin: 100px 0; }
+
+    section h2 {
+      font-size: 2.2rem;
+      text-align: center;
+      margin-bottom: 40px;
+      font-weight: 700;
     }
-    .person::before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(520px 240px at 10% 0%, rgba(255,255,255,.06), transparent 70%);
-      pointer-events:none;
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
-    .tag{
-      position:absolute;
-      top: 12px;
-      right: 12px;
+
+    .grid {
+      display: grid;
+      gap: 32px;
+    }
+
+    @media (min-width: 800px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .header-inner { flex-direction: row; justify-content: space-between; }
+      .school-logo { margin-bottom: 0; }
+    }
+
+    .group-section {
+      margin: 60px 0;
+    }
+
+    .group-title {
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 32px;
+      background: linear-gradient(90deg, var(--accent-purple), var(--accent-green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .member-card:hover { transform: translateY(-8px); }
+
+    .member-avatar {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-green));
+      display: grid;
+      place-items: center;
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .member-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .leader-badge {
+      background: var(--accent-purple);
+      color: white;
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-left: 10px;
+    }
+
+    .member-info {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 20px 40px;
+      color: var(--text-soft);
+      border-top: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    .logo-wrap{
       display:inline-flex;
       align-items:center;
-      gap: 6px;
-      padding: 7px 9px;
-      border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-      background: color-mix(in srgb, var(--panel0) 88%, transparent);
-      color: var(--muted);
-      font-size: 11.5px;
-      font-weight: 800;
-      z-index:2;
-    }
-    .tag i{
-      width:8px; height:8px; border-radius:999px;
-      background: linear-gradient(135deg, var(--b), var(--g));
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--b) 14%, transparent);
+      justify-content:center;
     }
 
-    .person__top{
-      display:flex;
-      align-items:center;
-      gap: 12px;
-      position:relative;
-      z-index:1;
-    }
-    .avatar{
-      width: 48px; height: 48px;
-      border-radius: 16px;
-      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-      background:
-        radial-gradient(120px 70px at 25% 20%, color-mix(in srgb, var(--p) 22%, transparent), transparent 55%),
-        radial-gradient(120px 70px at 80% 70%, color-mix(in srgb, var(--g) 18%, transparent), transparent 60%),
-        linear-gradient(180deg, var(--panel1), var(--panel0));
-      display:grid;
-      place-items:center;
-      flex: 0 0 auto;
-    }
-    .avatar svg{ width:28px; height:28px; opacity:.92; }
-
-    .person__name{
-      margin:0;
-      font-weight: 950;
-      letter-spacing:-.02em;
-      line-height: 1.1;
-      font-size: 14px;
-    }
-    .person__sub{
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12.5px;
-      line-height: 1.35;
+    /* SOMENTE no dark mode */
+    [data-theme="dark"] .logo-wrap{
+      background:#fff;
+      padding:2px 4px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 6px 18px rgba(0,0,0,.35);
     }
 
-    /* footer */
-    .footer{
-      margin-top: 16px;
+    .school-logo{
+      max-width:220px;
+      height:auto;
+      display:block;
+    }
+
+    .group{
+      margin: 50px 0 70px;
+    }
+
+    .group-title{
+      font-size: 1.8rem;
       text-align:center;
-      color: var(--muted);
-      font-size: 12.5px;
-      padding: 16px 8px;
+      margin-bottom: 22px;
+      background: linear-gradient(90deg, var(--accent-purple), var(--accent-green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    /* desktop enhancements */
-    @media (min-width: 920px){
-      .chip{ display:inline-flex; }
-      .hero__inner{
-        grid-template-columns: 1.15fr .85fr;
-        align-items:stretch;
-        gap: 14px;
-        padding: 20px;
-      }
-      .hero__grid{ grid-template-columns: 1fr; }
-      .grid2{ grid-template-columns: 1fr 1fr; }
-      .pc{ grid-template-columns: 1fr 1fr; }
+    .swiper{
+      padding: 10px 4px 34px;
     }
 
-    @media (max-width: 420px){
-      .person{ min-width: 82%; }
-      .brand__sub{ display:none; }
+    .group .swiper-pagination{
+      position: relative;
+      margin-top: 18px;
     }
 
-    /* Focus ring */
-    :focus-visible{
-      outline: 3px solid color-mix(in srgb, var(--p) 55%, transparent);
-      outline-offset: 3px;
-      border-radius: 12px;
-    }
-
-    /* Swiper adjustments for better responsivity */
-    .swiper-slide {
-      width: 260px !important;
+    .swiper-slide{
       height: auto;
     }
-    @media (max-width: 380px) {
-      .swiper-slide { width: calc(100vw - 40px) !important; }
+
+    .swiper-slide .member-card{
+      height: 100%;
     }
-    .swiper-pagination-bullet { background: var(--muted); opacity: 0.5; }
-    .swiper-pagination-bullet-active { background: var(--p); opacity: 1; }
-    .swiper-button-next, .swiper-button-prev { color: var(--muted); }
+
+    .member-card, .member-name { user-select: none; }
+
+    /* suaviza a esteira */
+    .group .swiper{
+      padding: 10px 4px 10px;
+    }
+
+    /* (opcional) cursor de arrastar */
+    .group .swiper{
+      cursor: grab;
+    }
+
+    .group .swiper-wrapper{
+      transition-timing-function: linear !important;
+    }
+
+    /* melhora interação */
+    .member-card, .member-name { user-select: none; }
+    .group .swiper{ cursor: grab; }
+    .group .swiper:active{ cursor: grabbing; }
+
+    .marquee{
+      position: relative;
+      overflow: hidden;
+      padding: 10px 4px;
+      cursor: grab;
+    }
+    .marquee:active{ cursor: grabbing; }
+
+    .marquee-track{
+      display: flex;
+      gap: 20px;
+      will-change: transform;
+      transform: translate3d(0,0,0);
+    }
+
+    .marquee .member-card{
+      background: var(--bg-card);
+      width: clamp(500px, 32vw, 820px);
+      padding: 34px 24px;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .marquee .member-card:hover{
+      transform: translateY(-8px);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.16);
+    }
+
+    /* avatar maior também */
+    .member-avatar{
+      width: 102px;
+      height: 102px;
+      font-size: 3.1rem;
+      margin-bottom: 18px;
+    }
+
+    /* texto um pouco maior */
+    .member-name{
+      font-size: 1.45rem;
+    }
+
+    .member-info{
+      font-size: 1.02rem;
+    }
+
+    /* ===== Cards horizontais de verdade ===== */
+    .marquee .member-card{
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      transition: transform .25s ease, box-shadow .25s ease;
+
+      /* tamanho */
+      width: min(860px, 72vw);    /* <<< largo MESMO */
+      padding: 22px 26px;
+
+      /* layout horizontal */
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      align-items: center;
+      column-gap: 22px;
+      text-align: left;          /* texto pro lado */
+    }
+
+    .marquee .member-card:hover{
+      transform: translateY(-6px);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.16);
+    }
+
+    /* avatar no lado esquerdo */
+    .marquee .member-avatar{
+      width: 80px;
+      height: 80px;
+      font-size: 3.2rem;
+    }
+
+    /* texto maior e com “cara” de card horizontal */
+    .marquee .member-name{
+      font-size: 1.55rem;
+      margin: 0 0 6px;
+    }
+
+    .marquee .member-info{
+      font-size: 1.05rem;
+    }
+
+    /* badge alinhado bonito */
+    .leader-badge{
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+
   </style>
 </head>
-
 <body>
-  <div class="bg-grid" aria-hidden="true"></div>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="topbar__inner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">
-          <!-- minimal "IA" mark -->
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M7.2 18.4V5.6" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M7.2 12h5.2" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M17.4 18.4l-3.6-12.8" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M20.4 18.4l-3.6-12.8" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>
-          </svg>
-        </div>
-        <div class="brand__txt">
-          <div class="brand__title">IA + Matemática & Física</div>
-          <div class="brand__sub">1º EM (manhã) • Colégio CoRRA • 3º andar</div>
-        </div>
-      </div>
-
-      <nav class="nav" aria-label="Navegação">
-        <a class="chip" href="#conteudo" title="Ir para o conteúdo">
-          <span style="font-family:var(--mono); opacity:.95;">∑</span> Conteúdo
-        </a>
-        <a class="chip" href="#grupos" title="Ir para os grupos">
-          <span style="font-family:var(--mono); opacity:.95;">⊞</span> Grupos
-        </a>
-
-        <!-- Destaques dropdown -->
-        <div class="drop">
-          <button class="btn" id="highlightsBtn" type="button" aria-haspopup="true" aria-expanded="false">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M6 7h12M6 12h12M6 17h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Destaques
-          </button>
-
-          <div class="menu" id="highlightsMenu" role="menu" aria-label="Destaques">
-            <div class="menu__head">
-              <p class="menu__title">Destaques</p>
-              <p class="menu__sub">Atalhos rápidos. (Meu Perfil e Jogos são links externos/redirect.)</p>
-            </div>
-
-            <div class="menu__items">
-              <a class="menu__item" role="menuitem" href="#conteudo">
-                <span class="menu__left">
-                  <span class="ico" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M8 20V8l10-4v12l-10 4Z" stroke="currentColor" stroke-width="2"/>
-                      <path d="M8 8l10-4" stroke="currentColor" stroke-width="2" opacity=".6"/>
-                    </svg>
-                  </span>
-                  <span style="min-width:0;">
-                    <div class="menu__name">Conteúdo principal</div>
-                    <div class="menu__hint">IA + Matemática + Física em linguagem simples</div>
-                  </span>
-                </span>
-                <span class="chev" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </a>
-
-              <a class="menu__item" role="menuitem" href="#grupos">
-                <span class="menu__left">
-                  <span class="ico" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M16 11a4 4 0 1 0-8 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                      <path d="M5 20c1.2-3.6 12.8-3.6 14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                  </span>
-                  <span style="min-width:0;">
-                    <div class="menu__name">Grupos</div>
-                    <div class="menu__hint">Carrossel com os integrantes</div>
-                  </span>
-                </span>
-                <span class="chev" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </a>
-
-              <!-- EXTERNOS: edita esses href depois -->
-              <a class="menu__item" role="menuitem" id="menuProfile" href="MEU_PERFIL_URL">
-                <span class="menu__left">
-                  <span class="ico" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M12 12.2a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Z" stroke="currentColor" stroke-width="2"/>
-                      <path d="M4.8 20.2c1.5-4.4 12.9-4.4 14.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                  </span>
-                  <span style="min-width:0;">
-                    <div class="menu__name">Meu Perfil</div>
-                    <div class="menu__hint">Vai redirecionar (você troca o link depois)</div>
-                  </span>
-                </span>
-                <span class="chev" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </a>
-
-              <a class="menu__item" role="menuitem" id="menuGames" href="JOGOS_URL">
-                <span class="menu__left">
-                  <span class="ico" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M7 14h10l2 6H5l2-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                      <path d="M9 10h6l2 4H7l2-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" opacity=".8"/>
-                      <path d="M9.5 16.5h.01M14.5 16.5h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
-                  </span>
-                  <span style="min-width:0;">
-                    <div class="menu__name">Jogos</div>
-                    <div class="menu__hint">Vai redirecionar (você troca o link depois)</div>
-                  </span>
-                </span>
-                <span class="chev" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <button class="btn" id="themeToggle" type="button" aria-label="Alternar tema">
-          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6M18.4 18.4l-1.6-1.6M7.2 7.2 5.6 5.6"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          Tema
-        </button>
-      </nav>
+<header>
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <img class="school-logo"
+           src="corra.png"
+           alt="Logo Colégio CoRRA"
+           onerror="this.src='https://via.placeholder.com/220x80/14213d/a5b4fc?text=CoRRA'; this.alt='Logo placeholder';">
     </div>
-  </header>
 
-  <main class="container">
-    <!-- HERO -->
-    <section class="hero" id="topo">
-      <div class="hero__inner">
-        <div>
-          <div class="kicker">
-            <span class="kdot" aria-hidden="true"></span>
-            <span><b>1º Ensino Médio (manhã)</b> • Colégio CoRRA • <b>3º andar</b></span>
-          </div>
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+  </div>
+</header>
 
-          <h1>
-            Quando <span class="grad">IA</span> encontra <span class="grad">Matemática</span> e <span class="grad">Física</span>.
-          </h1>
+<main>
 
-          <p>
-            Esta landing foi feita para apresentação: explicação clara do que é IA, como ela usa conceitos de exatas,
-            e por que isso importa no mundo real (com exemplos diretos e sem enrolação).
-          </p>
+  <section class="hero">
+    <h1>IA <span class="highlight">não é mágica</span></h1>
+    <p>
+      É <strong>Matemática</strong> + <strong>Física</strong> ensinando o computador a reconhecer padrões e prever o que acontece no mundo real, conceitos do dia a dia.
+    </p>
 
-          <div class="hero__meta">
-            <span class="pill">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 21s7-4.4 7-11a7 7 0 0 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="2"/>
-                <path d="M12 10.5a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z" stroke="currentColor" stroke-width="2"/>
-              </svg>
-              <b>Local:</b> 3º andar
-            </span>
-
-            <span class="pill">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M6 8l6-3 6 3v8l-6 3-6-3V8Z" stroke="currentColor" stroke-width="2"/>
-                <path d="M12 5v14" stroke="currentColor" stroke-width="2" opacity=".65"/>
-              </svg>
-              <b>Tema:</b> IA + Exatas
-            </span>
-
-            <span class="pill">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2"/>
-                <path d="M4 10V7a3 3 0 0 1 3-3h3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                <path d="M20 14v3a3 3 0 0 1-3 3h-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-              </svg>
-              <b>Turma:</b> 1º EM manhã
-            </span>
-          </div>
-        </div>
-
-        <div class="hero__grid">
-          <div class="hero__box">
-            <!-- FOTO SLOT (sem placeholder tosco; texto real de apresentação) -->
-            <div class="photo" id="photoSlot">
-              <div class="photo__title">
-                <b>Colégio CoRRA — 3º andar</b>
-                <p>
-                  Aqui entra a foto do local da apresentação (sala/corredor). A ideia é dar contexto visual do projeto.
-                </p>
-                <div class="equations" aria-hidden="true">
-                  <span class="eq">P(erro) ↓</span>
-                  <span class="eq">f(x) → padrão</span>
-                  <span class="eq">dados → modelo</span>
-                  <span class="eq">Δt • previsão</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- QUICK EXPLANATIONS -->
-            <div class="quick">
-              <div class="quick__row">
-                <div class="quick__left">
-                  <div class="quick__t"><i></i> Matemática: transforma dados em decisões</div>
-                  <div class="quick__p">IA usa estatística, álgebra e funções para aprender padrões e reduzir incerteza.</div>
-                </div>
-                <div class="quick__badge">∑ + Prob.</div>
-              </div>
-
-              <div class="quick__row">
-                <div class="quick__left">
-                  <div class="quick__t"><i></i> Física: conecta o modelo ao mundo real</div>
-                  <div class="quick__p">IA melhora medições, simulações e previsões (sensores, imagens, movimento, sinais).</div>
-                </div>
-                <div class="quick__badge">Δ + Modelo</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTENT -->
-    <section class="section" id="conteudo">
-      <div class="section__head">
-        <div>
-          <h2 class="section__title">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 3c-4.4 0-8 3.6-8 8 0 3.4 2.1 6.3 5.1 7.5V21h5.8v-2.5C17.9 17.3 20 14.4 20 11c0-4.4-3.6-8-8-8Z"
-                    stroke="currentColor" stroke-width="2"/>
-              <path d="M9 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Definição de Inteligência Artificial
-          </h2>
-          <p class="section__desc">
-            Em uma frase: IA é um jeito de fazer o computador <b>aprender com exemplos</b> para reconhecer padrões e tomar decisões.
-          </p>
-        </div>
-      </div>
-
-      <div class="section__body">
-        <div class="grid2">
-          <div class="card">
-            <h3><span class="dot"></span> O que a IA faz na prática</h3>
-            <p>
-              Ela recebe dados (ex.: números, imagens, textos), encontra padrões e gera uma saída:
-              classificar, prever, recomendar ou detectar algo.
-              Por exemplo: “isso parece um gato?”, “qual será o resultado?”, “qual opção é melhor?”.
-            </p>
-          </div>
-
-          <div class="card">
-            <h3><span class="dot"></span> Por que Matemática e Física entram nisso</h3>
-            <p>
-              Matemática dá as ferramentas para “aprender” (probabilidade, estatística, otimização).
-              Física ajuda a modelar o mundo (movimento, energia, sinais) e avaliar se o resultado faz sentido.
-            </p>
-          </div>
-        </div>
-
-        <div class="callout">
-          <b>Resumo inteligente:</b> dados viram modelo (matemática) e o modelo faz previsões sobre o mundo (física).
-          A qualidade do resultado depende de dados bons, boas medidas e interpretação correta.
-        </div>
-      </div>
-    </section>
-
-    <!-- MATH + PHYSICS EXAMPLES -->
-    <section class="section">
-      <div class="section__head">
-        <div>
-          <h2 class="section__title">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M8 20V8l10-4v12l-10 4Z" stroke="currentColor" stroke-width="2"/>
-              <path d="M8 8l10-4" stroke="currentColor" stroke-width="2" opacity=".6"/>
-            </svg>
-            IA na Matemática e na Física
-          </h2>
-          <p class="section__desc">
-            Exemplos simples, de apresentação: como isso aparece no dia a dia e por que funciona.
-          </p>
-        </div>
-      </div>
-
-      <div class="section__body">
-        <div class="grid2">
-          <div class="card">
-            <h3><span class="dot"></span> Matemática: padrões, probabilidade e otimização</h3>
-            <p>
-              Em muitos problemas, não existe “certeza”, existe <b>chance</b>. A IA calcula probabilidades e escolhe a melhor opção.
-              Ela também ajusta parâmetros (otimização) para errar menos com o tempo.
-            </p>
-            <div class="callout" style="margin-top:10px;">
-              <b>Exemplo rápido:</b> previsão de tendência (subir/descer) usando dados anteriores e redução de erro a cada treino.
-            </div>
-          </div>
-
-          <div class="card">
-            <h3><span class="dot"></span> Física: sinais, movimento e medições</h3>
-            <p>
-              Quando a gente mede o mundo (sensores, imagem, áudio), sempre tem ruído.
-              A IA ajuda a <b>filtrar</b>, <b>detectar</b> e <b>prever</b> com base no comportamento físico.
-            </p>
-            <div class="callout" style="margin-top:10px;">
-              <b>Exemplo rápido:</b> detectar um padrão em um sensor (vibração/temperatura) antes de uma falha.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PROS / CONS -->
-    <section class="section">
-      <div class="section__head">
-        <div>
-          <h2 class="section__title">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M20 7L10 17l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Vantagens e Desvantagens
-          </h2>
-          <p class="section__desc">
-            O que a IA melhora — e onde a gente precisa ter cuidado para não cair em erro ou uso errado.
-          </p>
-        </div>
-      </div>
-
-      <div class="section__body">
-        <div class="pc">
-          <div class="card">
-            <h3><span class="dot"></span> Vantagens (quando usada direito)</h3>
-            <ul class="list" id="prosList"></ul>
-          </div>
-
-          <div class="card">
-            <h3><span class="dot"></span> Desvantagens (riscos e limites)</h3>
-            <ul class="list" id="consList"></ul>
-          </div>
-        </div>
-
-        <div class="callout" style="margin-top:12px;">
-          <b>Frase-chave pra apresentação:</b> IA não é “mágica” — é um sistema que aprende com dados e pode errar se os dados forem ruins,
-          se o problema for mal definido ou se a pessoa confiar sem conferir.
-        </div>
-      </div>
-    </section>
-
-    <!-- GROUPS -->
-    <section class="section" id="grupos">
-      <div class="section__head">
-        <div>
-          <h2 class="section__title">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M16 11a4 4 0 1 0-8 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M5 20c1.2-3.6 12.8-3.6 14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Grupos
-          </h2>
-          <p class="section__desc">
-            Cada grupo tem um carrossel com os integrantes. (Avatar padrão em SVG + nome.)
-          </p>
-        </div>
-      </div>
-
-      <div class="section__body">
-        <div class="groups" id="groupsRoot"></div>
-      </div>
-    </section>
-
-    <div class="footer">
-      </div>
-    </section>
-
-    <div class="footer">
-      1º Ensino Médio (manhã) • Colégio CoRRA • 3º andar • Tema: IA + Matemática + Física
+    <div class="tags">
+      <div class="tag">📍 3º andar</div>
+      <div class="tag">🧑‍🎓 1º EM Manhã</div>
+      <div class="tag">📐 Matemática + Física + IA</div>
     </div>
-  </main>
+  </section>
 
-  <!-- Swiper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <section>
+    <h2>O que é Inteligência Artificial?</h2>
+    <div class="card">
+      <p style="font-size:1.15rem; text-align:center; max-width:900px; margin:0 auto;">
+        A Inteligência Artificial é o computador aprendendo a partir de muitos exemplos para reconhecer padrões e fazer previsões.
+        Tudo baseado em conceitos de <strong>Matemática</strong> (probabilidade, funções, vetores) e <strong>Física</strong> (movimento, ondas, luz, sinais).
+      </p>
+    </div>
+  </section>
 
-  <script>
-    // =============================================
-    // Tema claro / escuro
-    // =============================================
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const html = document.documentElement;
+  <section>
+    <h2>Como Matemática e Física aparecem na IA</h2>
+    <div class="grid">
+      <div class="card">
+        <h3 style="color:var(--accent-purple); margin-bottom:20px;">Matemática na IA</h3>
+        <ul style="padding-left:28px; color:var(--text-soft); font-size:1.05rem;">
+          <li>Recomendações em redes sociais e apps de música</li>
+          <li>Previsão de tendências e resultados</li>
+          <li>Correção automática de textos</li>
+        </ul>
+      </div>
 
-    function updateIcon(isDark) {
-      if (isDark) {
-        themeIcon.innerHTML = `
-          <path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6M18.4 18.4l-1.6-1.6M7.2 7.2 5.6 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="2"/>
-        `;
-      } else {
-        themeIcon.innerHTML = `
-          <circle cx="12" cy="12" r="5" fill="currentColor"/>
-          <path d="M12 1v2M12 21v-2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h-2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        `;
-      }
-    }
+      <div class="card">
+        <h3 style="color:var(--accent-green); margin-bottom:20px;">Física na IA</h3>
+        <ul style="padding-left:28px; color:var(--text-soft); font-size:1.05rem;">
+          <li>Reconhecimento de rostos e objetos em fotos</li>
+          <li>Assistentes que entendem voz</li>
+          <li>Sistemas que interpretam movimento e perspectiva</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-    function toggleTheme() {
-      if (html.getAttribute('data-theme') === 'dark') {
-        html.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-        updateIcon(false);
-      } else {
-        html.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-        updateIcon(true);
-      }
-    }
+  <section>
+    <h2>Vantagens e cuidados</h2>
+    <div class="grid">
+      <div class="card">
+        <h3 style="color:var(--accent-purple);">Vantagens</h3>
+        <ul style="padding-left:28px; font-size:1.05rem;">
+          <li>Encontra padrões escondidos em grandes quantidades de informação</li>
+          <li>Personaliza conteúdos e experiências</li>
+          <li>Apoia na criação de textos, imagens e ideias</li>
+        </ul>
+      </div>
 
-    // carregar tema salvo ou preferência do sistema
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      html.setAttribute('data-theme', savedTheme);
-      updateIcon(savedTheme === 'dark');
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      html.setAttribute('data-theme', 'dark');
-      updateIcon(true);
-    } else {
-      updateIcon(false);
-    }
+      <div class="card">
+        <h3 style="color:#f87171;">Cuidados importantes</h3>
+        <ul style="padding-left:28px; font-size:1.05rem;">
+          <li>Pode repetir erros ou preconceitos dos dados usados</li>
+          <li>Não compreende o mundo como nós — só associa estatisticamente</li>
+          <li>Consome muita energia</li>
+          <li>Pode gerar conteúdos falsos convincentes</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-    themeToggle.addEventListener('click', toggleTheme);
+  <section class="group-section">
+    <h2>Grupos</h2>
+    <div id="groupsRoot"></div>
+  </section>
 
+  </section>
 
-    // =============================================
-    // Dropdown menu (Destaques)
-    // =============================================
-    const highlightsBtn = document.getElementById('highlightsBtn');
-    const highlightsMenu = document.getElementById('highlightsMenu');
+</main>
 
-    highlightsBtn.addEventListener('click', () => {
-      const isOpen = highlightsMenu.getAttribute('data-open') === 'true';
-      highlightsMenu.setAttribute('data-open', !isOpen);
-      highlightsBtn.setAttribute('aria-expanded', !isOpen);
-    });
+<footer>
+  1º Ensino Médio – Manhã • Colégio Ricardo Rodrigues Alves (CoRRA) • 3º andar<br>
+  Projeto: IA + Matemática & Física • 2026
+</footer>
 
-    // fechar ao clicar fora
-    document.addEventListener('click', (e) => {
-      if (!highlightsBtn.contains(e.target) && !highlightsMenu.contains(e.target)) {
-        highlightsMenu.setAttribute('data-open', 'false');
-        highlightsBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
+<script>
+  // Tema
+  const toggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
 
+  function updateIcon() {
+    toggle.textContent = html.dataset.theme === 'dark' ? '☀️' : '🌙';
+  }
 
-    // =============================================
-    // Popular Vantagens e Desvantagens
-    // =============================================
-    const pros = [
-      { title: "Velocidade", desc: "Processa milhões de cálculos em segundos — impossível para humanos." },
-      { title: "Escalabilidade", desc: "Funciona 24/7 sem cansar, em milhares de casos ao mesmo tempo." },
-      { title: "Detecção de padrões", desc: "Encontra relações que humanos dificilmente perceberiam." },
-      { title: "Automação de tarefas repetitivas", desc: "Libera tempo para atividades criativas e estratégicas." },
-      { title: "Melhoria contínua", desc: "Quanto mais dados bons recebe, mais precisa fica (em tese)." }
-    ];
+  toggle.addEventListener('click', () => {
+    html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', html.dataset.theme);
+    updateIcon();
+  });
 
-    const cons = [
-      { title: "Viés nos dados", desc: "Se os dados forem enviesados, a IA aprende e reproduz o preconceito." },
-      { title: "Falta de compreensão real", desc: "Não “entende” — só faz associações estatísticas." },
-      { title: "Custo computacional", desc: "Treinar modelos grandes exige muita energia e hardware caro." },
-      { title: "Caixa-preta", desc: "Muitas vezes é difícil explicar exatamente por que chegou numa decisão." },
-      { title: "Dependência excessiva", desc: "Pessoas podem parar de questionar e confiar cegamente." }
-    ];
+  if (localStorage.getItem('theme')) {
+    html.dataset.theme = localStorage.getItem('theme');
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.dataset.theme = 'dark';
+  }
+  updateIcon();
 
-    function createListItem(item) {
-      return `
-        <li class="li">
-          <div class="ic">
-            <svg viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-              <polyline points="16 10 12 14 8 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div>
-            <b>${item.title}</b>
-            <span>${item.desc}</span>
-          </div>
-        </li>
-      `;
-    }
+</script>
 
-    document.getElementById('prosList').innerHTML = pros.map(createListItem).join('');
-    document.getElementById('consList').innerHTML = cons.map(item => createListItem(item).replace('currentColor', 'var(--r)')).join('');
+<script>
+  // ========= DADOS (edita aqui) =========
+  const GROUPS = [
+    {
+      title: "Grupo A",
+      members: [
+        { name: "Thiago", leader: true, info: "1º EM Manhã" },
+        { name: "Tales", leader: false, info: "1º EM Manhã" },
+        { name: "Victor", leader: false, info: "1º EM Manhã" },
+        { name: "Rafael", leader: false, info: "1º EM Manhã" }
+      ],
+    },
+    {
+      title: "Grupo B",
+      members: [
+        { name: "Eduarda", leader: false, info: "1º EM Manhã" },
+        { name: "Alice", leader: false, info: "1º EM Manhã" },
+        { name: "Ana Luiza", leader: false, info: "1º EM Manhã" },
+      ],
+    },
+  ];
 
+  // ========= HELPERS =========
+  const initials = (name) => {
+    const parts = name.trim().split(/\s+/);
+    const a = parts[0]?.[0] ?? "A";
+    const b = parts[1]?.[0] ?? "";
+    return (a + b).toUpperCase();
+  };
 
-    // =============================================
-    // Exemplo de grupos (você pode editar ou vir do banco depois)
-    // =============================================
-    const groupsData = [
-      {
-        name: "Grupo A – Os Algoritmos Atômicos",
-        members: [
-          {name: "Ana Clara", tag: "Líder"},
-          {name: "Bernardo"},
-          {name: "Clara Menezes"},
-          {name: "Daniel"},
-          {name: "Eduarda"}
-        ]
-      },
-      {
-        name: "Grupo B – Equação & Neurônio",
-        members: [
-          {name: "Felipe Santos", tag: "Líder"},
-          {name: "Gabriela"},
-          {name: "Heitor"},
-          {name: "Isabela"},
-          {name: "João Pedro"}
-        ]
-      },
-      {
-        name: "Grupo C – Vetores & Vetores",
-        members: [
-          {name: "Larissa", tag: "Líder"},
-          {name: "Matheus"},
-          {name: "Natália"},
-          {name: "Otávio"},
-          {name: "Pedro Henrique"}
-        ]
-      },
-      {
-        name: "Grupo D – Caos & Rede Neural",
-        members: [
-          {name: "Quitéria", tag: "Líder"},
-          {name: "Rafael"},
-          {name: "Sophia"},
-          {name: "Theo"},
-          {name: "Valentina"}
-        ]
-      }
-    ];
-
-    const groupsRoot = document.getElementById('groupsRoot');
-
-    groupsData.forEach((group, index) => {
-      const groupEl = document.createElement('div');
-      groupEl.className = 'group';
-      groupEl.innerHTML = `
-        <div class="group__head">
-          <h3 class="group__name">
-            ${group.name}
-            <small>Grupo ${String.fromCharCode(65 + index)}</small>
-          </h3>
-          <div class="ctrls">
-            <button class="iconbtn" title="Anterior" data-swiper-nav="prev">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <button class="iconbtn" title="Próximo" data-swiper-nav="next">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
+  const memberSlideHTML = (m) => {
+    const badge = m.leader ? `<span class="leader-badge">Líder</span>` : "";
+    return `
+      <div class="swiper-slide">
+        <div class="member-card">
+          <div class="member-avatar">${initials(m.name)}</div>
+          <p class="member-name">${m.name} ${badge}</p>
+          <div class="member-info">${m.info ?? ""}</div>
         </div>
-        <div class="carousel">
-          <div class="swiper" id="swiper-${index}">
-            <div class="swiper-wrapper">
-              ${group.members.map(m => `
-                <div class="swiper-slide">
-                  <div class="person">
-                    ${m.tag ? `<span class="tag"><i></i>${m.tag}</span>` : ''}
-                    <div class="person__top">
-                      <div class="avatar">
-                        <svg viewBox="0 0 24 24" fill="none">
-                          <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-                          <path d="M4 21v-2a7 7 0 0 1 14 0v2H4Z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 class="person__name">${m.name}</h4>
-                        <div class="person__sub">1º EM – Manhã</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-            <div class="swiper-pagination"></div>
-          </div>
-        </div>
-      `;
+      </div>
+    `;
+  };
 
-      groupsRoot.appendChild(groupEl);
+  const memberCardHTML = (m) => {
+    const badge = m.leader ? `<span class="leader-badge">Líder</span>` : "";
+    return `
+    <div class="member-card">
+      <div class="member-avatar">${initials(m.name)}</div>
+      <p class="member-name">${m.name} ${badge}</p>
+      <div class="member-info">${m.info ?? ""}</div>
+    </div>
+  `;
+  };
 
-      // inicializa Swiper após inserir no DOM
-      new Swiper(`#swiper-${index}`, {
-        slidesPerView: 'auto',
-        spaceBetween: 16,
-        pagination: { el: '.swiper-pagination', clickable: true },
-        navigation: false,
-        breakpoints: {
-          640: { slidesPerView: 2 },
-          920: { slidesPerView: 3 }
-        }
-      });
+  const groupHTML = (group, idx) => `
+  <div class="group" id="group-${idx}">
+    <div class="group-title">${group.title}</div>
 
-      // botões de navegação customizados
-      groupEl.querySelectorAll('[data-swiper-nav]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const swiper = document.querySelector(`#swiper-${index}`).swiper;
-          if (btn.dataset.swiperNav === 'prev') swiper.slidePrev();
-          else swiper.slideNext();
-        });
-      });
+    <div class="marquee" data-speed="${group.speed ?? 55}">
+      <div class="marquee-track">
+        ${group.members.map(memberCardHTML).join("")}
+      </div>
+    </div>
+  </div>
+`;
+
+  // ========= RENDER =========
+  const root = document.getElementById("groupsRoot");
+  root.innerHTML = GROUPS.map(groupHTML).join("");
+
+  // ========= INIT: esteira infinita + pausa no drag =========
+  function initMarqueeSwiper(el) {
+    const swiper = new Swiper(el, {
+      loop: true,
+      loopAdditionalSlides: 20,
+      slidesPerView: 1.25,
+      spaceBetween: 20,
+
+      // ESTEIRA infinita real
+      speed: 6000, // controla a "velocidade" (maior = mais suave/lento)
+      autoplay: {
+        delay: 0,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
+
+      // arrastar sem "snap"
+      freeMode: {
+        enabled: true,
+        momentum: false,
+        sticky: false,
+      },
+
+      grabCursor: true,
+      allowTouchMove: true,
+
+      breakpoints: {
+        640:  { slidesPerView: 2.2 },
+        1024: { slidesPerView: 3.4 },
+        1200: { slidesPerView: 4.2 },
+      },
     });
-  </script>
+
+    // pausa ao interagir
+    const pause = () => swiper.autoplay?.stop();
+
+    // continua EXATAMENTE de onde parou
+    const resume = () => {
+      // força recalcular posições depois do drag
+      swiper.update();
+      swiper.autoplay?.start();
+    };
+
+    // touch/mobile
+    swiper.on("touchStart", pause);
+    swiper.on("sliderFirstMove", pause);
+    swiper.on("touchEnd", resume);
+
+    // mouse/desktop
+    el.addEventListener("pointerdown", pause, { passive: true });
+    el.addEventListener("pointerup", resume, { passive: true });
+    el.addEventListener("pointercancel", resume, { passive: true });
+    el.addEventListener("mouseleave", () => {
+      // se saiu arrastando, volta
+      if (!swiper.autoplay?.running) resume();
+    });
+
+    return swiper;
+  }
+
+  function initMarquee(el){
+    const track = el.querySelector('.marquee-track');
+    if(!track) return;
+
+    // duplica até ficar grande o suficiente (pra nunca ver “fim”)
+    const fill = () => {
+      const containerW = el.clientWidth;
+      if (track.scrollWidth >= containerW * 2) return;
+
+      const original = Array.from(track.children);
+      while (track.scrollWidth < containerW * 2) {
+        original.forEach(node => track.appendChild(node.cloneNode(true)));
+      }
+    };
+
+    fill();
+    window.addEventListener('resize', fill);
+
+    let speed = Number(el.dataset.speed || 55); // px/s
+    let x = 0;
+    let last = performance.now();
+
+    let dragging = false;
+    let startX = 0;
+    let startPos = 0;
+
+    // o “ciclo” é metade do track (porque duplicamos)
+    const baseWidth = () => track.scrollWidth / 2;
+
+    const tick = (now) => {
+      const dt = (now - last) / 1000;
+      last = now;
+
+      if (!dragging) {
+        x -= speed * dt;
+
+        const bw = baseWidth();
+        if (bw > 0 && Math.abs(x) >= bw) x += bw; // wrap perfeito
+      }
+
+      track.style.transform = `translate3d(${x}px,0,0)`;
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    // drag: pausa e move manualmente
+    el.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      startX = e.clientX;
+      startPos = x;
+      el.setPointerCapture(e.pointerId);
+    }, { passive: true });
+
+    el.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      x = startPos + dx;
+      track.style.transform = `translate3d(${x}px,0,0)`;
+    }, { passive: true });
+
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+
+      // normaliza x dentro do ciclo, pra nunca “pular”
+      const bw = baseWidth();
+      if (bw > 0) {
+        while (x <= -bw) x += bw;
+        while (x > 0) x -= bw;
+      }
+    };
+
+    el.addEventListener('pointerup', endDrag, { passive: true });
+    el.addEventListener('pointercancel', endDrag, { passive: true });
+    el.addEventListener('mouseleave', endDrag, { passive: true });
+  }
+
+  document.querySelectorAll('.marquee').forEach(initMarquee);
+
+</script>
+
+
 </body>
 </html>
